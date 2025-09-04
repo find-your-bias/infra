@@ -46,10 +46,10 @@ jobs:
         run: |
           mkdir all-k8s-specifications
           cp -r k8s-specifications/* all-k8s-specifications/ || true
-          cp -r /home/ubuntu/actions-runner/_work/infra/infra/vote-microservice/k8s-specifications/* all-k8s-specifications/ || true
-          cp -r /home/ubuntu/actions-runner/_work/infra/infra/result-microservice/k8s-specifications/* all-k8s-specifications/ || true
-          cp -r /home/ubuntu/actions-runner/_work/infra/infra/worker-microservice/k8s-specifications/* all-k8s-specifications/ || true
-          cp -r /home/ubuntu/actions-runner/_work/infra/infra/ai-analyzer-microservice/k8s-specifications/* all-k8s-specifications/ || true
+          cp -r /home/ubuntu/actions-runner/_work/infra/infra/vote/k8s-specifications/* all-k8s-specifications/ || true
+          cp -r /home/ubuntu/actions-runner/_work/infra/infra/result/k8s-specifications/* all-k8s-specifications/ || true
+          cp -r /home/ubuntu/actions-runner/_work/infra/infra/worker/k8s-specifications/* all-k8s-specifications/ || true
+          cp -r /home/ubuntu/actions-runner/_work/infra/infra/ai-analyzer/k8s-specifications/* all-k8s-specifications/ || true
 
       # Run your setup script
       - name: Run setup script
