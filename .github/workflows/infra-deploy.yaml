@@ -1,49 +1,64 @@
-name: Infra Deploy (All Microservices)
+name: Infra CD
 
 on:
-  workflow_dispatch:  # Trigger manually
+  workflow_dispatch:
 
 jobs:
   deploy:
-    runs-on: self-hosted   # Infra runs on your GitHub self-hosted runner
+    runs-on: self-hosted
 
     steps:
-      - name: Checkout Infra Repo
+      # Checkout the infra repo (this repo)
+      - name: Checkout infra
         uses: actions/checkout@v4
 
-      - name: Clone all microservice repos
+      # Checkout each microservice repo
+      - name: Checkout vote
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/vote
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: vote
+
+      - name: Checkout result
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/result
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: result
+
+      - name: Checkout worker
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/worker
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: worker
+
+      - name: Checkout ai-analyzer
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/ai-analyzer
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: ai-analyzer
+
+      # Gather all k8s manifests
+      - name: Collect k8s manifests
         run: |
-          mkdir -p services
-          cd services
+          mkdir all-k8s
+          cp -r k8s/* all-k8s/ || true
+          cp -r vote/k8s/* all-k8s/ || true
+          cp -r result/k8s/* all-k8s/ || true
+          cp -r worker/k8s/* all-k8s/ || true
+          cp -r ai-analyzer/k8s/* all-k8s/ || true
 
-          # Clone microservices from your GitHub org
-          git clone https://github.com/find-your-bias/vote.git
-          git clone https://github.com/find-your-bias/result.git
-          git clone https://github.com/find-your-bias/worker.git
-          git clone https://github.com/find-your-bias/ai-analyzer.git
+      # Run your setup script
+      - name: Run setup script
+        run: bash setup.sh
 
-      - name: Gather all k8s-specifications manifests
-        run: |
-          mkdir -p all-k8s-specifications
+      # Apply all manifests
+      - name: Apply Kubernetes manifests
+        run: kubectl apply -R -f all-k8s/
 
-          # Copy infra k8s-specifications
-          cp -r k8s-specifications/* all-k8s-specifications/ || true
-
-          # Copy k8s-specifications from microservices
-          cp -r services/vote/k8s-specifications/* all-k8s-specifications/ || true
-          cp -r services/result/k8s-specifications/* all-k8s-specifications/ || true
-          cp -r services/worker/k8s-specifications/* all-k8s-specifications/ || true
-          cp -r services/ai-analyzer/k8s-specifications/* all-k8s-specifications/ || true
-
-      - name: Setup Kubernetes
-        run: |
-          chmod +x setup.sh
-          ./setup.sh
-
-      - name: Apply all manifests
-        run: |
-          kubectl apply -R -f all-k8s-specifications/
-
+      # Clean up
       - name: Cleanup
-        run: |
-          rm -rf services all-k8s-specifications
+        run: rm -rf vote result worker ai-analyzer all-k8s
