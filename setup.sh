@@ -30,4 +30,6 @@ echo "Installing metric server done"
 
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.0/deploy/static/provider/baremetal/deploy.yaml
 
+sleep 15
+
 echo "Installing ingress controller done"
