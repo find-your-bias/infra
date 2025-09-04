@@ -32,7 +32,8 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/cont
 
 # Wait for controller to be ready
 kubectl wait --namespace ingress-nginx \
-  --for=condition=available deployment/ingress-nginx-controller \
+  --for=condition=ready pod \
+  --selector=app.kubernetes.io/component=controller \
   --timeout=180s
 
 echo "Installing ingress controller done"
