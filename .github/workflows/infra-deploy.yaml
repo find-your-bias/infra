@@ -50,11 +50,18 @@ jobs:
           cp -r /home/ubuntu/actions-runner/_work/infra/infra/result/k8s-specifications/* all-k8s-specifications/ || true
           cp -r /home/ubuntu/actions-runner/_work/infra/infra/worker/k8s-specifications/* all-k8s-specifications/ || true
           cp -r /home/ubuntu/actions-runner/_work/infra/infra/ai-analyzer/k8s-specifications/* all-k8s-specifications/ || true
-
       # Run your setup script
       - name: Run setup script
         run: bash setup.sh
-
+      
+      # configuring aws secret for ai-analyzer 
+      - name: Configure AWS Secret for K8s
+        run: |
+          kubectl delete secret aws-credentials --ignore-not-found
+          kubectl create secret generic aws-credentials \
+            --from-literal=AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
+            --from-literal=AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      
       # Apply all manifests
       - name: Apply Kubernetes manifests
         run: kubectl apply -R -f all-k8s-specifications/
