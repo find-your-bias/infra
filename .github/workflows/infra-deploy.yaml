@@ -1,0 +1,49 @@
+name: Infra Deploy (All Microservices)
+
+on:
+  workflow_dispatch:  # Trigger manually
+
+jobs:
+  deploy:
+    runs-on: self-hosted   # Infra runs on your GitHub self-hosted runner
+
+    steps:
+      - name: Checkout Infra Repo
+        uses: actions/checkout@v4
+
+      - name: Clone all microservice repos
+        run: |
+          mkdir -p services
+          cd services
+
+          # Clone microservices from your GitHub org
+          git clone https://github.com/find-your-bias/vote.git
+          git clone https://github.com/find-your-bias/result.git
+          git clone https://github.com/find-your-bias/worker.git
+          git clone https://github.com/find-your-bias/ai-analyzer.git
+
+      - name: Gather all k8s-specifications manifests
+        run: |
+          mkdir -p all-k8s-specifications
+
+          # Copy infra k8s-specifications
+          cp -r k8s-specifications/* all-k8s-specifications/ || true
+
+          # Copy k8s-specifications from microservices
+          cp -r services/vote/k8s-specifications/* all-k8s-specifications/ || true
+          cp -r services/result/k8s-specifications/* all-k8s-specifications/ || true
+          cp -r services/worker/k8s-specifications/* all-k8s-specifications/ || true
+          cp -r services/ai-analyzer/k8s-specifications/* all-k8s-specifications/ || true
+
+      - name: Setup Kubernetes
+        run: |
+          chmod +x setup.sh
+          ./setup.sh
+
+      - name: Apply all manifests
+        run: |
+          kubectl apply -R -f all-k8s-specifications/
+
+      - name: Cleanup
+        run: |
+          rm -rf services all-k8s-specifications
