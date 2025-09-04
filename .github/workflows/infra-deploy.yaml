@@ -16,28 +16,28 @@ jobs:
       - name: Checkout vote
         uses: actions/checkout@v4
         with:
-          repository: ${{ github.repository_owner }}/vote
+          repository: ${{ github.repository_owner }}/vote-microservice
           token: ${{ secrets.GITHUB_TOKEN }}
           path: vote
 
       - name: Checkout result
         uses: actions/checkout@v4
         with:
-          repository: ${{ github.repository_owner }}/result
+          repository: ${{ github.repository_owner }}/result-microservice
           token: ${{ secrets.GITHUB_TOKEN }}
           path: result
 
       - name: Checkout worker
         uses: actions/checkout@v4
         with:
-          repository: ${{ github.repository_owner }}/worker
+          repository: ${{ github.repository_owner }}/worker-microservice
           token: ${{ secrets.GITHUB_TOKEN }}
           path: worker
 
       - name: Checkout ai-analyzer
         uses: actions/checkout@v4
         with:
-          repository: ${{ github.repository_owner }}/ai-analyzer
+          repository: ${{ github.repository_owner }}/ai-analyzer-microservice
           token: ${{ secrets.GITHUB_TOKEN }}
           path: ai-analyzer
 
