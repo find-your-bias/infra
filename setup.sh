@@ -38,3 +38,30 @@ kubectl wait --namespace ingress-nginx \
   --timeout=180s
 
 echo "Installing ingress controller done"
+
+echo "Installing helm"
+
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+chmod 700 get_helm.sh
+./get_helm.sh
+
+sleep 30
+
+echo "Installing helm done"
+
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+
+echo "Adding Prometheus repo done"
+
+echo "Installing Prometheus"
+
+kubectl create ns monitoring
+
+helm install monitoring prometheus-community/kube-prometheus-stack \
+-n monitoring \
+-f ./custom_kube_prometheus_stack.yml
+
+sleep 30 
+
+echo "Installing Prometheus and Grafana done"
