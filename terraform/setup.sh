@@ -18,9 +18,10 @@ echo "Runner token received: ${runner_token}" >> /var/log/user-data.log
 # Configure runner
 ./config.sh --unattended \
   --url https://github.com/find-your-bias \
-  --token ${runner_token} \
-  --name org_runner \
-  --work _work
+  --token "${runner_token}" \
+  --name "org_runner" \
+  --work "_work" >> /var/log/runner-config.log 2>&1
+
 
 # Install service
 sudo ./svc.sh install
