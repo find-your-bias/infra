@@ -13,6 +13,7 @@ curl -o actions-runner.tar.gz -L https://github.com/actions/runner/releases/down
 tar xzf ./actions-runner.tar.gz
 rm actions-runner.tar.gz
 
+echo "Runner token received: ${runner_token}" >> /var/log/user-data.log
 
 # Configure runner
 ./config.sh --unattended \
