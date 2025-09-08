@@ -42,7 +42,7 @@ jobs:
 
       - name: Terraform Apply
         working-directory: terraform
-        run: terraform apply -auto-approve -input=false tfplan
+        run: terraform apply -auto-approve 
         env:
           # Pass the runner token specifically to Terraform
           TF_VAR_runner_token: ${{ env.RUNNER_TOKEN }}
