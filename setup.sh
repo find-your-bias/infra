@@ -62,7 +62,7 @@ echo "Installing Prometheus"
 
 sudo -u ubuntu kubectl create ns monitoring
 
-helm install monitoring prometheus-community/kube-prometheus-stack \
+sudo -u ubuntu helm install monitoring prometheus-community/kube-prometheus-stack \
 -n monitoring \
 -f ./custom_kube_prometheus_stack.yml
 
