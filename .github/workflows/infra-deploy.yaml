@@ -5,6 +5,8 @@ on:
     workflows: ["Setup Infra and Deploy GitHub Runner"]
     types:
       - completed
+  
+  workflow_dispatch: #manual trigger
 
 jobs:
   deploy:
