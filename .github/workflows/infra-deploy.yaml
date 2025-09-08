@@ -1,7 +1,10 @@
 name: Infra CD
 
 on:
-  workflow_dispatch:
+  workflow_run:
+    workflows: ["Setup Infra and Deploy GitHub Runner"]
+    types:
+      - completed
 
 jobs:
   deploy:

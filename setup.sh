@@ -39,6 +39,9 @@ kubectl wait --namespace ingress-nginx \
 
 echo "Installing ingress controller done"
 
+# Patch ingress-nginx-controller service to use a specific NodePort for http
+kubectl patch service -n ingress-nginx ingress-nginx-controller --type='json' -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value":32000}]'
+
 echo "Installing helm"
 
 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3

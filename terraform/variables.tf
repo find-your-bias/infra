@@ -13,5 +13,11 @@ variable "instance_type" {
 variable "ami_id" {
   description = "AMI ID for the instance"
   type        = string
-  default     = "..." # Ubuntu 22.04 in us-east-1
+  default     = "ami-04f59c565deeb2199" # kubeadm before init
+}
+
+variable "runner_token" {
+  description = "GitHub token for runner registration"
+  type        = string
+  sensitive   = true
 }
