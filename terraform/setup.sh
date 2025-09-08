@@ -14,9 +14,10 @@ sudo apt-get install -y curl tar jq
 sudo mkdir -p $RUNNER_DIR && cd $RUNNER_DIR
 
 # Download latest runner package
-RUNNER_VERSION=$(curl -s https://api.github.com/repos/actions/runner/releases/latest \
-  | grep tag_name | cut -d '"' -f 4 | sed 's/v//')
-curl -o actions-runner.tar.gz -L https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz
+# RUNNER_VERSION=$(curl -s https://api.github.com/repos/actions/runner/releases/latest \
+#   | grep tag_name | cut -d '"' -f 4 | sed 's/v//')
+# curl -o actions-runner.tar.gz -L https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz
+curl -o actions-runner-linux-x64-2.328.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.328.0/actions-runner-linux-x64-2.328.0.tar.gz
 tar xzf ./actions-runner.tar.gz
 rm actions-runner.tar.gz
 
