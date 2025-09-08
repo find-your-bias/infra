@@ -15,7 +15,7 @@ rm actions-runner.tar.gz
 
 echo "Runner token received: ${runner_token}" >> /var/log/user-data.log
 
-udo chown -R ubuntu:ubuntu /home/ubuntu/actions-runner
+sudo chown -R ubuntu:ubuntu /home/ubuntu/actions-runner
 
 # Configure runner
 ./config.sh --unattended \
