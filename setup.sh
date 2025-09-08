@@ -24,16 +24,16 @@ until sudo -u ubuntu kubectl get pods -n kube-system | grep -Ev 'STATUS|Running'
 done
 echo "Kubernetes control-plane setup complete."
 
-kubectl apply -f https://raw.githubusercontent.com/vilasvarghese/docker-k8s/refs/heads/master/yaml/hpa/components.yaml
+sudo -u ubuntu kubectl apply -f https://raw.githubusercontent.com/vilasvarghese/docker-k8s/refs/heads/master/yaml/hpa/components.yaml
 
 echo "Installing metric server done"
 
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.0/deploy/static/provider/baremetal/deploy.yaml 
+sudo -u ubuntu kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.0/deploy/static/provider/baremetal/deploy.yaml 
 
 
 sleep 10
 # Wait for controller to be ready
-kubectl wait --namespace ingress-nginx \
+sudo -u ubuntu kubectl wait --namespace ingress-nginx \
   --for=condition=ready pod \
   --selector=app.kubernetes.io/component=controller \
   --timeout=180s
@@ -41,7 +41,7 @@ kubectl wait --namespace ingress-nginx \
 echo "Installing ingress controller done"
 
 # Patch ingress-nginx-controller service to use a specific NodePort for http
-kubectl patch service -n ingress-nginx ingress-nginx-controller --type='json' -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value":32000}]'
+sudo -u ubuntu kubectl patch service -n ingress-nginx ingress-nginx-controller --type='json' -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value":32000}]'
 
 echo "Installing helm"
 
@@ -60,7 +60,7 @@ echo "Adding Prometheus repo done"
 
 echo "Installing Prometheus"
 
-kubectl create ns monitoring
+sudo -u ubuntu kubectl create ns monitoring
 
 helm install monitoring prometheus-community/kube-prometheus-stack \
 -n monitoring \
