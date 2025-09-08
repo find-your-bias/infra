@@ -21,7 +21,7 @@ sudo chown -R ubuntu:ubuntu /home/ubuntu/actions-runner
 ./config.sh --unattended \
   --url https://github.com/find-your-bias \
   --token "${runner_token}" \
-  --name "org_runner" \
+  --name org_runner \
   --work "_work" >> /var/log/runner-config.log 2>&1
 
 
