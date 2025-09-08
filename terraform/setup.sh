@@ -18,11 +18,13 @@ echo "Runner token received: ${runner_token}" >> /var/log/user-data.log
 sudo chown -R ubuntu:ubuntu /home/ubuntu/actions-runner
 
 # Configure runner
-./config.sh --unattended \
+# Configure runner as ubuntu user
+sudo -u ubuntu ./config.sh --unattended \
   --url https://github.com/find-your-bias \
   --token "${runner_token}" \
   --name org_runner \
   --work "_work" >> /var/log/runner-config.log 2>&1
+
 
 
 # Install service
