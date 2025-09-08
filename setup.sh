@@ -24,11 +24,11 @@ until sudo -u ubuntu kubectl get pods -n kube-system | grep -Ev 'STATUS|Running'
 done
 echo "Kubernetes control-plane setup complete."
 
-kubectl apply -f https://raw.githubusercontent.com/vilasvarghese/docker-k8s/refs/heads/master/yaml/hpa/components.yaml
+kubectl apply -f https://raw.githubusercontent.com/vilasvarghese/docker-k8s/refs/heads/master/yaml/hpa/components.yaml --validate=false
 
 echo "Installing metric server done"
 
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.0/deploy/static/provider/baremetal/deploy.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.0/deploy/static/provider/baremetal/deploy.yaml --validate=false
 
 sleep 10
 # Wait for controller to be ready
