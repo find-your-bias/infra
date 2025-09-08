@@ -29,6 +29,7 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             https://api.github.com/orgs/find-your-bias/actions/runners/registration-token \
             | jq -r .token)
+          echo $TOKEN
           echo "RUNNER_TOKEN=$TOKEN" >> $GITHUB_ENV
 
       - name: Terraform Init
