@@ -1,10 +1,9 @@
-resource "aws_instance" "web" {
-  ami           = "ami-04f59c565deeb2199"
-  instance_type = "t2.medium"
-  key_name      = "doddegowdanv"
+resource "aws_instance" "demo" {
+  ami           = var.ami_id
+  instance_type = var.instance_type
   # No security group specified = uses default
   user_data = file("${path.module}/setup.sh")
   tags = {
-    Name = "ydg-hackathon-k8-machine"
+    Name = "find-your-bias-machine"
   }
 }
