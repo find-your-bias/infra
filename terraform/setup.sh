@@ -18,7 +18,7 @@ rm actions-runner.tar.gz
 ./config.sh --unattended \
   --url https://github.com/find-your-bias \
   --token ${runner_token} \
-  --name ${hostname} \
+  --name org_runner \
   --work _work
 
 # Install service
