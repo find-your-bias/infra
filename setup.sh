@@ -26,12 +26,19 @@ echo "Kubernetes control-plane setup complete."
 
 sudo -u ubuntu kubectl apply -f https://raw.githubusercontent.com/vilasvarghese/docker-k8s/refs/heads/master/yaml/hpa/components.yaml
 
+
+sudo -u ubuntu kubectl -n kube-system wait --for=condition=Available \
+  deploy/metrics-server --timeout=300s || \
+sudo -u ubuntu kubectl -n kube-system wait --for=condition=Available \
+  deploy -l k8s-app=metrics-server --timeout=300s
+
+
 echo "Installing metric server done"
 
 sudo -u ubuntu kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.0/deploy/static/provider/baremetal/deploy.yaml 
 
 
-sleep 10
+# sleep 10
 # Wait for controller to be ready
 sudo -u ubuntu kubectl wait --namespace ingress-nginx \
   --for=condition=ready pod \
@@ -49,7 +56,7 @@ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scrip
 chmod 700 get_helm.sh
 ./get_helm.sh
 
-sleep 30
+helm version
 
 echo "Installing helm done"
 
@@ -62,10 +69,11 @@ echo "Installing Prometheus"
 
 sudo -u ubuntu kubectl create ns monitoring
 
-sudo -u ubuntu helm install monitoring prometheus-community/kube-prometheus-stack \
--n monitoring \
--f ./custom_kube_prometheus_stack.yml
 
-sleep 30 
+sudo -u ubuntu helm install monitoring prometheus-community/kube-prometheus-stack \
+  -n monitoring \
+  -f ./custom_kube_prometheus_stack.yml \
+  --wait --timeout 20m --atomic
+
 
 echo "Installing Prometheus and Grafana done"
