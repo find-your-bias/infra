@@ -3,6 +3,7 @@ kind: PersistentVolume
 metadata:
   name: db-pv
   labels:
+    app: db
     type: local
 spec:
   capacity:

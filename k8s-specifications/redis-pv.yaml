@@ -3,6 +3,7 @@ kind: PersistentVolume
 metadata:
   name: redis-pv
   labels:
+    app: redis
     type: local
 spec:
   capacity:
