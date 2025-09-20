@@ -71,3 +71,31 @@ jobs:
       - name: Apply Kubernetes manifests
         run: sudo -u ubuntu kubectl apply -R -f all-k8s-specifications/
 
+      # Resolve target URL for DAST from repo var or Ingress
+      - name: Resolve DAST target URL
+        id: resolve-url
+        env:
+          DAST_TARGET_URL: ${{ vars.DAST_TARGET_URL }}
+        shell: bash
+        run: |
+          if [ -n "$DAST_TARGET_URL" ]; then
+            echo "Using repo var DAST_TARGET_URL: $DAST_TARGET_URL"
+            echo "target_url=$DAST_TARGET_URL" >> $GITHUB_OUTPUT
+          else
+            HOST=$(sudo -u ubuntu kubectl get ingress ingress-result -o jsonpath='{.spec.rules[0].host}' 2>/dev/null || true)
+            if [ -n "$HOST" ]; then
+              echo "Resolved Ingress host: $HOST"
+              echo "target_url=http://$HOST" >> $GITHUB_OUTPUT
+            else
+              echo "Could not resolve target URL, defaulting to http://example.com"
+              echo "target_url=http://example.com" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+      # Post-deploy DAST scan (non-blocking)
+      - name: DAST (OWASP ZAP baseline)
+        uses: zaproxy/action-baseline@v0.12.0
+        with:
+          target: ${{ steps.resolve-url.outputs.target_url }}
+        continue-on-error: true
+
