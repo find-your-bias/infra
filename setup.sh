@@ -80,28 +80,28 @@ echo "Installing Prometheus and Grafana done"
 
 # --- Add these lines to your setup.sh ---
 
-echo "Installing Docker..."
-# Add Docker's official GPG key:
-sudo apt-get update
-sudo apt-get install -y ca-certificates curl
-sudo install -m 0755 -d /etc/apt/keyrings
-sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-sudo chmod a+r /etc/apt/keyrings/docker.asc
+# echo "Installing Docker..."
+# # Add Docker's official GPG key:
+# sudo apt-get update
+# sudo apt-get install -y ca-certificates curl
+# sudo install -m 0755 -d /etc/apt/keyrings
+# sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+# sudo chmod a+r /etc/apt/keyrings/docker.asc
 
-# Add the repository to Apt sources:
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-sudo apt-get update
+# # Add the repository to Apt sources:
+# echo \
+#   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+#   $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+#   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+# sudo apt-get update
 
-# Install Docker Engine:
-sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+# # Install Docker Engine:
+# sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-# Add the 'ubuntu' user to the 'docker' group to run docker without sudo
-# This is important for the GitHub Action runner
-sudo usermod -aG docker ubuntu
+# # Add the 'ubuntu' user to the 'docker' group to run docker without sudo
+# # This is important for the GitHub Action runner
+# sudo usermod -aG docker ubuntu
 
-echo "Docker installed successfully."
+# echo "Docker installed successfully."
 
 # --- End of new lines ---
