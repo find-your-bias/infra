@@ -82,7 +82,7 @@ jobs:
             echo "Using repo var DAST_TARGET_URL: $DAST_TARGET_URL"
             echo "target_url=$DAST_TARGET_URL" >> $GITHUB_OUTPUT
           else
-            HOST=$(sudo -u ubuntu kubectl get ingress ingress-result -o jsonpath='{.spec.rules[0].host}' 2>/dev/null || true)
+            HOST=$(sudo -u ubuntu kubectl get ingress result-ingress -o jsonpath='{.spec.rules[0].host}' 2>/dev/null || true)
             if [ -n "$HOST" ]; then
               echo "Resolved Ingress host: $HOST"
               echo "target_url=http://$HOST" >> $GITHUB_OUTPUT
