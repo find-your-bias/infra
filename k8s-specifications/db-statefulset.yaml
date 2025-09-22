@@ -5,7 +5,7 @@ metadata:
   labels:
     app: db
 spec:
-  serviceName: "db-service"
+  serviceName: "db"
   replicas: 1
   selector:
     matchLabels:
