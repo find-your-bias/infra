@@ -5,7 +5,7 @@ metadata:
   labels:
     app: redis
 spec:
-  serviceName: "redis-service"
+  serviceName: "redis"
   replicas: 1
   selector:
     matchLabels:
