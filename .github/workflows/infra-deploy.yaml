@@ -67,6 +67,14 @@ jobs:
             --from-literal=AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
             --from-literal=AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
       
+      # Configure DB Secret for K8s
+      - name: Configure DB Secret for K8s
+        run: |
+          sudo -u ubuntu kubectl delete secret db-credentials --ignore-not-found
+          sudo -u ubuntu kubectl create secret generic db-credentials \
+            --from-literal=POSTGRES_USER=${{ secrets.POSTGRES_USER }} \
+            --from-literal=POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+      
       # Apply all manifests
       - name: Apply Kubernetes manifests
         run: sudo -u ubuntu kubectl apply -R -f all-k8s-specifications/
